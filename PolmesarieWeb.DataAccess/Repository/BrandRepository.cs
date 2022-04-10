@@ -8,18 +8,18 @@ using System.Threading.Tasks;
 
 namespace PolmesarieWeb.DataAccess.Repository
 {
-    public class CategoryRepository : Repository<ProductCategory>, ICategoryRepository
+    public class BrandRepository : Repository<Brand>, IBrandRepository
     {
         private ApplicationDbContext _db;
 
-        public CategoryRepository(ApplicationDbContext db) : base(db)
+        public BrandRepository(ApplicationDbContext db) : base(db)
         {
             _db = db;
         }
 
-        public void Update(ProductCategory obj)
+        public void Update(Brand obj)
         {
-            _db.ProductCategories.Update(obj);
+            _db.ProductBrands.Update(obj);
         }
     }
 }

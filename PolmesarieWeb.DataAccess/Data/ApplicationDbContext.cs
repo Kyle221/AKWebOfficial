@@ -11,5 +11,6 @@ namespace PolmesarieWeb.DataAccess
         }
 
         public DbSet<ProductCategory> ProductCategories { get; set; }
+        public DbSet<Brand> ProductBrands { get; set; }
     }
 }

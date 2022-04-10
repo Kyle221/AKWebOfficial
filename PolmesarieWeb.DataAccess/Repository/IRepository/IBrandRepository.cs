@@ -7,9 +7,9 @@ using System.Threading.Tasks;
 
 namespace PolmesarieWeb.DataAccess.Repository.IRepository
 {
-    public interface ICategoryRepository : IRepository<ProductCategory>
+    public interface IBrandRepository : IRepository<Brand>
     {
-        void Update(ProductCategory obj);
+        void Update(Brand obj);
 
     }
 }

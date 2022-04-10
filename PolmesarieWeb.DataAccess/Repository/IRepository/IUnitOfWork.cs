@@ -1,5 +1,4 @@
-﻿using PolmesarieWeb.Models;
-using System;
+﻿using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Text;
@@ -7,9 +6,11 @@ using System.Threading.Tasks;
 
 namespace PolmesarieWeb.DataAccess.Repository.IRepository
 {
-    public interface ICategoryRepository : IRepository<ProductCategory>
+    public interface IUnitOfWork
     {
-        void Update(ProductCategory obj);
+        ICategoryRepository Category { get; }
+        IBrandRepository Brand { get; }
 
+        void Save();
     }
 }

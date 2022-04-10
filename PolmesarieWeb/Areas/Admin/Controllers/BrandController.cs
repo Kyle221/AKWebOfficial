@@ -5,18 +5,19 @@ using PolmesarieWeb.Models;
 
 namespace PolmesarieWeb.Controllers
 {
-    public class CategoryController : Controller
+    [Area("Admin")]
+    public class BrandController : Controller
     {
 
-        private readonly ICategoryRepository _db;
+        private readonly IUnitOfWork _unitOfWork;
 
-        public CategoryController(ICategoryRepository db)
+        public BrandController(IUnitOfWork unitOfWork)
         {
-            _db = db;
+            _unitOfWork = unitOfWork;
         }
         public IActionResult Index()
         {
-            IList<ProductCategory> objList = _db.GetAll();
+            IList<Brand> objList = _unitOfWork.Brand.GetAll();
             return View(objList);
         }
 
@@ -28,19 +29,19 @@ namespace PolmesarieWeb.Controllers
                 return NotFound();
             }
             //var categoryFromDb = _db.ProductCategories.Find(id);
-            var categoryFromDbFirst = _db.GetFirstOrDefault(u => u.Id == id);
-            if(categoryFromDbFirst == null)
+            var objFromDbFirst = _unitOfWork.Brand.GetFirstOrDefault(u => u.Id == id);
+            if(objFromDbFirst == null)
             {
                 return NotFound();
             }
 
-            return View(categoryFromDbFirst);
+            return View(objFromDbFirst);
         }
 
         [HttpPost]
         [ValidateAntiForgeryToken]
         //protect against anti forgery token attacks.
-        public IActionResult Edit(ProductCategory obj)
+        public IActionResult Edit(Brand obj)
         {
             //if(obj.CategoryName == obj.DisplayOrder.ToString())
             //{
@@ -48,9 +49,9 @@ namespace PolmesarieWeb.Controllers
             //}
             if(ModelState.IsValid)
             {
-                _db.Update(obj);
-                _db.Save();
-                TempData["success"] = "Product Category Updated Successfully!";
+                _unitOfWork.Brand.Update(obj);
+                _unitOfWork.Save();
+                TempData["success"] = "Product Brand Updated Successfully!";
                 return RedirectToAction("Index");
             }
             return View(obj);
@@ -67,7 +68,7 @@ namespace PolmesarieWeb.Controllers
         [HttpPost]
         [ValidateAntiForgeryToken]
         //protect against anti forgery token attacks.
-        public IActionResult Create(ProductCategory obj)
+        public IActionResult Create(Brand obj)
         {
             //if(obj.CategoryName == obj.DisplayOrder.ToString())
             //{
@@ -75,9 +76,9 @@ namespace PolmesarieWeb.Controllers
             //}
             if (ModelState.IsValid)
             {
-                _db.Add(obj);
-                _db.Save();
-                TempData["success"] = "Product Category Added Successfully!";
+                _unitOfWork.Brand.Add(obj);
+                _unitOfWork.Save();
+                TempData["success"] = "Product Brand Added Successfully!";
                 return RedirectToAction("Index");
             }
             return View(obj);
@@ -93,13 +94,13 @@ namespace PolmesarieWeb.Controllers
                 return NotFound();
             }
             //var categoryFromDb = _db.ProductCategories.Find(id);
-            var categoryFromDbFirst = _db.GetFirstOrDefault(u => u.Id == id);
-            if (categoryFromDbFirst == null)
+            var objFromDbFirst = _unitOfWork.Brand.GetFirstOrDefault(u => u.Id == id);
+            if (objFromDbFirst == null)
             {
                 return NotFound();
             }
 
-            return View(categoryFromDbFirst);
+            return View(objFromDbFirst);
         }
 
         [HttpPost]
@@ -110,14 +111,14 @@ namespace PolmesarieWeb.Controllers
 
             //var obj = _db.ProductCategories.Find(id);
 
-            var obj = _db.GetFirstOrDefault(u => u.Id == id);
+            var obj = _unitOfWork.Brand.GetFirstOrDefault(u => u.Id == id);
            if(obj == null)
             {
                 return NotFound();
             }
-           _db.Remove(obj);
-            _db.Save();
-            TempData["success"] = "Product Category Removed Successfully!";
+            _unitOfWork.Brand.Remove(obj);
+            _unitOfWork.Save();
+            TempData["success"] = "Product Brand Removed Successfully!";
             return RedirectToAction("Index");
 
         }
