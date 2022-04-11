@@ -1,0 +1,142 @@
+﻿@model PolmesarieWeb.Models.ViewModels.ProductVM
+
+<form method="post" asp-action="Upsert" enctype="multipart/form-data">
+    <input asp-for="Product.Id" hidden />
+    <input asp-for="Product.PictureUrl" hidden />
+
+
+    <div class="col-10">
+         <div class="border p-3 mt-4">
+        <div class="col-12 pb-2">
+            <h2 class="text-primary">@(Model.Product.Id!=0?"Update": "Create") Product Details</h2>
+            <hr />
+        </div>
+      @*  <div asp-validation-summary="All"></div>*@
+        <div class="mb-3">
+            <label asp-for="Product.Name"> Name </label>
+            <input asp-for="Product.Name" class="form-control" />
+            <span asp-validation-for="Product.Name" class="text-danger"></span>
+        </div>
+
+
+        <div class="mb-3">
+            <label asp-for="Product.Description"> Description </label>
+            <textarea asp-for="Product.Description" rows="3" class="form-control"></textarea>
+            <span asp-validation-for="Product.Description" class="text-danger"></span>
+        </div>
+
+        <div class="mb-3">
+            <label asp-for="Product.PictureUrl"></label>
+            <input type="file" id="uploadBox" name="file" class="form-control" />
+            <span asp-validation-for="Product.PictureUrl" class="text-danger"></span>
+        </div>
+
+         <div class="mb-3 col-2">
+            <label asp-for="Product.CustomerPrice"> Customer Retail Price </label>
+            <input asp-for="Product.CustomerPrice" class="form-control" />
+            <span asp-validation-for="Product.CustomerPrice" class="text-danger"></span>
+        </div>
+
+         <div class="mb-3 col-2">
+            <label asp-for="Product.ResellerPrice"> Reseller Retail Price </label>
+            <input asp-for="Product.ResellerPrice" class="form-control" />
+            <span asp-validation-for="Product.ResellerPrice" class="text-danger"></span>
+        </div>
+
+         <div class="mb-3 col-6">
+            <label asp-for="Product.ProductCategoryId"> Product Category  </label>
+            <select asp-for="Product.ProductCategoryId" asp-items="@Model.CategoryList" class="form-select">
+                <option disabled selected>-- Select a Category --</option>
+            </select>
+            <span asp-validation-for="Product.ProductCategoryId" class="text-danger"></span>
+        </div>
+
+        <div class="mb-3 col-6">
+            <label asp-for="Product.BrandId"> Product Brand  </label>
+            <select asp-for="Product.BrandId" asp-items="@Model.BrandsList" class="form-select">
+                <option disabled selected>-- Select a Brand --</option>
+            </select>
+            <span asp-validation-for="Product.BrandId" class="text-danger"></span>
+        </div>
+
+     
+        <div class="container text-end">
+         @if(Model.Product.Id!=0)
+            {
+                <button type="submit" class="btn btn-success" style="width:150px;"> Update </button>
+            }
+            else
+            {
+                 <button type="submit" onclick="return ValidateInput()" class="btn btn-success" style="width:150px;"> Create </button>
+            }
+            <a asp-controller="Product" asp-action="Index" class="btn btn-primary" style="width:150px;"> Back </a>
+       
+       
+        </div>
+       
+
+    </div>
+
+    <div class="col-4 pt-4 justify-content-center">
+        <h3> Current Image</h3>
+        <img src="@Model.Product.PictureUrl" width="100%" style="border-radius:3px; border:1px solid #fff" />
+    </div>
+    </div>
+   
+</form>
+
+@*@section Scripts{
+    @{
+        <partial name="_ValidationScriptsPartial" />
+    }
+    <script>
+    function ValidateInput(){
+        if(document.getElementById("uploadBox").value=""){
+            Swal.fire({
+              icon: 'error',
+              title: 'Oops...',
+              text: 'A product image is required!',
+              footer: '<a href="">Why do I have this issue?</a>'
+});
+return false;
+        }
+        return true;
+    }
+    </script>
+}*@
+
+@section Scripts{
+    @{
+        <partial name="_ValidationScriptsPartial" />
+     }
+     
+    //tinymce.init({
+    //  selector: 'textarea',
+    //  plugins: 'a11ychecker advcode casechange export formatpainter linkchecker autolink lists checklist media mediaembed pageembed permanentpen powerpaste table advtable tinycomments tinymcespellchecker',
+    //  toolbar: 'a11ycheck addcomment showcomments casechange checklist code export formatpainter pageembed permanentpen table',
+    //  toolbar_mode: 'floating',
+    //});
+
+    
+     <script>
+    tinymce.init({
+      selector: 'textarea',
+      plugins: 'advlist autolink lists link image charmap preview anchor pagebreak',
+      toolbar_mode: 'floating',
+    });
+  
+    function ValidateInput()
+    {
+        if(document.getElementById("uploadBox").value=="")
+        {
+            Swal.fire({
+            icon: 'error',
+            title: 'Image Upload Required',
+            text: 'Please remember to attach an image to this product.',
+        });
+        return false;
+        }
+        return true;
+    }
+    </script>
+    }
